@@ -127,33 +127,6 @@ def my_progress():
     return render_template('my_progress.html', random_accessible_topics=random_accessible_topics, top_active_topics=top_active_topics)
 
 
-
-@app.route('/hack/<action>', methods=['GET', 'POST'])
-def hack(action):
-    match action:
-        case "import_users":
-            mysite.models.import_users_from_csv("users.csv")
-        case "import_problems":
-            mysite.models.load_problems_from_json("static/problems.json")
-        case "clear_nontopic":
-            db.session.query(Problem).filter_by(topic_id="").delete()
-            db.session.commit()
-        case "clear_commas":
-            topics = Topic.query.all()
-            for topic in topics:
-                if ',' in topic.prerequisites:
-                    topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
-                    db.session.merge(topic)
-                    db.session.commit()
-        case "fix_pre":
-            topics = Topic.query.all()
-            for topic in topics:
-                if ',' in topic.prerequisites:
-                    topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
-                    db.session.merge(topic)
-                    db.session.commit()
-    return redirect('/')
-
 @app.route('/hack/<action>', methods=['GET', 'POST'])
 @app.route('/hack/<action>/<arg>', methods=['GET', 'POST'], defaults={"arg": None})
 def hack(action, arg=None):
