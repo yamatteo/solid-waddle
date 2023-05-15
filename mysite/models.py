@@ -9,7 +9,8 @@ from flask_wtf import FlaskForm
 from wtforms import (SelectMultipleField, StringField, SubmitField,
                      TextAreaField)
 from wtforms.validators import DataRequired, Length
-from sqlalchemy.exc import IntegrityError, OperationalError, NoResultFound, MultipleResultsFound
+from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 from mysite.init import app
 
