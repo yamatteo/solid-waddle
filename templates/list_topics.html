@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import bring_up_modal %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12">
+      <h1>Topic Dashboard</h1>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-2">
+      {% if session.get('user_is_editor') %}
+      <form action="{{ url_for('new_topic') }}" method="POST">
+        <button type="submit" class="btn btn-primary mr-2">New Topic</button>
+      </form>
+      {% endif %}
+    </div>
+    <div class="col-8">
+      <div class="input-group">
+        <input type="text" id="search" class="form-control" placeholder="Search...">
+        <div class="input-group-append">
+          <button id="search_button" class="btn btn-outline-secondary" type="button">Search</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th>Score</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th># Problems</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for topic in topics %}
+      <tr class="search-item" style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f7f7f7';"
+      onmouseout="this.style.backgroundColor='transparent';">
+        <td onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';">{{ topic.score }}%</td>
+        <td onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';"><div style="display:none;">{{ topic.id }}</div>{{ topic.title }}</td>
+        <td onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';">{{ topic.description }}</td>
+        <td onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';">{{ topic.num_problems }}</td>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{{ url_for('edit_topic', topic_id=topic.id) }}" class="btn btn-primary btn-sm mr-2">Edit</a>
+            {{ bring_up_modal('Delete', 'delete_topic_modal', extra=topic.id, klass='danger', small=True) }}
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% include 'delete_topic_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  function text_search() {
+    var value = $('#search').val().toLowerCase();
+    $('.search-item').filter(function () {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  }
+
+  $(document).ready(function () {
+    // Function to perform search on keyup event
+    $('#search').on('keyup', text_search);
+    $('#search_button').on('click', text_search);
+    // $('#filter-topic').on('change', topic_search);
+  });
+
+  // $(document).ready(function () {
+  //   // Function to perform search on keyup event
+  //   $('#search').on('keyup', text_search);
+  //   $('#search_button').on('click', text_search);
+
+  //   $(document).ready(function () {
+  //     // Function to perform search on keyup event
+  //     $('#search').on('keyup', function () {
+  //       var value = $(this).val().toLowerCase();
+  //       $('.search-item').filter(function () {
+  //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  //       });
+  //     });
+
+  //     // Function to perform search on search button click event
+  //     $('button').click(function () {
+  //       var value = $('#search').val().toLowerCase();
+  //       $('.search-item').filter(function () {
+  //         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+  //       });
+  //     });
+  //   });
+</script>
+{% endblock %}

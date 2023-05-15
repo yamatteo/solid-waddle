@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+
+      <h1>Problem {{ problem.id }}</h1>
+      
+      {{ problem.text }}
+      <br>
+      <form action="{{ url_for('check_answer', problem_id=problem.id) }}" method="post">
+        {% for solution in problem.solutions|shuffle %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="answer" id="solution_{{ loop.index }}" value="{{ solution }}">
+            <label class="form-check-label" for="solution_{{ loop.index }}">
+              {{ solution }}
+            </label>
+          </div>
+        {% endfor %}
+        
+        <button type="submit" class="btn btn-primary">Check Answer</button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}

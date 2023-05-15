@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% from 'macros.html' import bring_up_modal, external_form_submit, single_button_form %}
+
+{% block content %}
+<div class="container mt-5">
+  <h1>Edit Topic</h1>
+
+  <form id="editPrerequisiteForm" method="post">
+    {{ form.csrf_token }}
+    <div class="form-group">
+      <label for="title">Title</label>
+      {{ form.title(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      {{ form.description(class_="form-control") }}
+    </div>
+    <!-- <input type="hidden" id="whatProblem" name="whatProblem" value="" />
+      <input type="hidden" id="toWhatTopic" name="toWhatTopic" value="" /> -->
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+  </form>
+
+
+
+  <div>
+    <label>Problems</label>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Text</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for problem in problems %}
+        <tr>
+          <td>{{ problem.id }}</td>
+          <td>{{ problem.text }}</td>
+          <td>
+            <a href="{{ url_for('edit_problem', problem_id=problem.id) }}" class="btn btn-secondary">Edit</a>
+            {{ bring_up_modal('Move', 'move_problem_modal', extras={'problem-id': problem.id}) }}
+            {{ bring_up_modal('Delete', 'delete_problem_modal', klass='danger', extras={'problem-id': problem.id})}}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    {{ single_button_form('New Problem', url_for('new_problem', topic_id=topic.id), klass='primary') }}
+    <!-- <button form="new_problem_form" type="submit" class="btn btn-primary btn-sm mr-2">New Problem</button> -->
+  </div>
+
+  <div>
+    <label>Prerequisites</label>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prerequisite in prerequisites %}
+        <tr>
+          <td>{{ prerequisite.id }}</td>
+          <td>{{ prerequisite.title }}</td>
+          <td>{{ single_button_form('Remove', url_for('remove_prerequisite'), extras={'topic_id': topic.id,
+            'prerequisite':prerequisite.id}, klass='danger') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  {{ bring_up_modal('Add prerequisite', 'add_prerequisite_modal', klass='primary')}}
+
+  <form id="new_problem_form" action="{{ url_for('new_problem', topic_id=topic.id) }}" method="post"></form>
+</div>
+
+
+{% include 'move_problem_modal.html' %}
+{% include 'delete_problem_modal.html' %}
+{% include 'add_prerequisite_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Collect problem's id upon move problem modal opening
+  $('#move_problem_modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var problemId = button.data('problem-id');
+    var modal = $(this);
+    modal.find('#problem_id').val(problemId);
+  });
+
+  // Collect problem's id upon delete problem modal opening
+  $('#delete_problem_modal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var problemId = button.data('problem-id');
+    var modal = $(this);
+    modal.find('#problem_id').val(problemId);
+  });
+
+  // Filter prerequisites based on search input
+  $(document).ready(function () {
+    $('#searchPrerequisite').on('keyup', function () {
+      var value = $(this).val().toLowerCase();
+      $('#prerequisiteList option').filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+  });
+
+  // Submit form when Add button is clicked in the modal
+  $(document).on("click", "#addPrerequisiteButton", function () {
+    $("#add_prerequisite_input").val(
+      $("#prerequisiteList").val()
+    )
+    $("#editPrerequisiteForm").submit();
+  });
+
+  // $(document).on("click", "#moveProblemButton", function () {
+  //   $("#toWhatTopic").val(
+  //     $("#topicList").val()
+  //   )
+  //   $("#editPrerequisiteForm").submit();
+  // });
+
+  // Submit form when Remove button is clicked in the prerequisites list
+  function removePrerequisite(id) {
+    $("#rem_prerequisite_input").val(id)
+    $("#editPrerequisiteForm").submit();
+  };
+
+  // function setWhatProblem(id) {
+  //   $("#whatProblem").val(id);
+  // };
+</script>
+{% endblock %}

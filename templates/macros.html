@@ -1,0 +1,17 @@
+{% macro external_form_submit(text, target, klass='secondary', small=False) %}
+<button form="{{ target }}" type="submit" class="btn btn-{{ klass }} {% if small %}btn-sm{% endif %}">{{ text }}</button>
+{% endmacro %}
+
+{% macro single_button_form(text, action, extras={}, klass='secondary', small=False) %}
+<form action="{{ action }}" method="POST">
+    {% for key, value in extras.items() %}
+    <input type="hidden" name="{{ key }}" value="{{ value }}" />
+    {% endfor %}
+    <button type="submit" class="btn btn-{{ klass }} {% if small %}btn-sm{% endif %}">{{ text }}</button>
+</form>
+{% endmacro %}
+
+{% macro bring_up_modal(text, target, extra=None, extras={}, klass='secondary', small=False) %}
+<button type="button" class="btn btn-{{ klass }} {% if small %}btn-sm{% endif %}" data-toggle="modal"
+    data-target="#{{ target }}" {% if extra %}data-extra="{{ extra }}" {% endif %}{% for key, value in extras.items() %} data-{{ key }}="{{ value }}"{% endfor %}>{{ text }}</button>
+{% endmacro %}

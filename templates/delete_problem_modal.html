@@ -1,0 +1,31 @@
+<div class="modal fade" id="delete_problem_modal" tabindex="-1" role="dialog" aria-labelledby="delete_problem_modal_label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="delete_problem_modal_label">Delete Problem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this problem?</p>
+                <form id="deleteProblemForm" action="{{ url_for('delete_problem') }}" method="POST">
+                    <input type="hidden" id="problem_id" name="problem_id">
+                    <input type="hidden" id="next_url" name="next_url" value="{{ url_for(request.endpoint, **request.view_args) }}">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Collect problem's id upon delete problem modal opening
+    $('#delete_problem_modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var problemId = button.data('problem-id');
+        var modal = $(this);
+        modal.find('#problem_id').val(problemId);
+    });
+</script>

@@ -1,0 +1,46 @@
+<div class="modal fade" id="move_problem_modal" tabindex="-1" role="dialog" aria-labelledby="move_problem_modal_label"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="move_problem_modal_label">Move Problem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="moveProblemForm" action="{{ url_for('move_problem') }}" method="POST">
+                    <input type="hidden" id="problem_id" name="problem_id" value="">
+                    <input type="hidden" id="next_url" name="next_url" value="{{ url_for(request.endpoint, **request.view_args) }}">
+                    <div class="form-group">
+                        <label for="searchPrerequisite">Search Topic</label>
+                        <input type="text" class="form-control" id="searchTopic" name="searchTopic">
+                    </div>
+                    <div class="form-group">
+                        <label for="topicList">Available Prerequisites</label>
+                        <select class="form-control" id="topicList" name="topic_id">
+                            <option value="" disabled>Select Topic</option>
+                            {% for t in topics %}
+                            <option value="{{ t.id }}">{{ t.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="moveProblemButton">Move</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Collect problem's id upon move problem modal opening
+    $('#move_problem_modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var problemId = button.data('problem-id');
+        var modal = $(this);
+        modal.find('#problem_id').val(problemId);
+        console.log("now is", modal.find('#problem_id').val());
+    });
+</script>

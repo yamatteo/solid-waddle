@@ -1,0 +1,40 @@
+{
+    "problems": [
+        {
+            "id": "df73b3ab",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation \\(x^2 - 3x - 10 = 0\\) using factoring.",
+            "solutions": [
+                "-2",
+                "-5",
+                "2",
+                "5",
+                "None of the above"
+            ]
+        },
+        {
+            "id": "1a2b3c4d",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation $4x^2 - 4x + 1 = 0$ using the quadratic formula.",
+            "solutions": [
+                "1/2",
+                "-1/2",
+                "2",
+                "-2",
+                "None of the above"
+            ]
+        },
+        {
+            "id": "5f6e7d8c",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation $2x^2 - 6x - 8 = 0$ by completing the square.",
+            "solutions": [
+                "2 + 2\\sqrt{3}, 2 - 2\\sqrt{3}",
+                "2 - 2\\sqrt{3}, 2 + 2\\sqrt{3}",
+                "-2 - 2\\sqrt{3}, -2 + 2\\sqrt{3}",
+                "-2 + 2\\sqrt{3}, -2 - 2\\sqrt{3}",
+                "None of the above"
+            ]
+        }
+    ]
+}

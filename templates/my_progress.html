@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2>Active Topics:</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for topic in top_active_topics %}
+          <tr style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f7f7f7';"
+          onmouseout="this.style.backgroundColor='transparent';" onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';" style="cursor: pointer;">
+            <td>{{ topic.title }}</td>
+            <td>{{ (100*topic.fraction)|int }}%</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <h2>Some accessible topics:</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Topic</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for topic in random_accessible_topics %}
+          <tr style="cursor: pointer;" onmouseover="this.style.backgroundColor='#f7f7f7';"
+          onmouseout="this.style.backgroundColor='transparent';" onclick="location.href='{{ url_for('random_problem', topic_id=topic.id) }}';" style="cursor: pointer;">
+            <td>{{ topic.title }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

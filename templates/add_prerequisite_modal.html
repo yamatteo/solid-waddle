@@ -1,0 +1,35 @@
+<div class="modal fade" id="add_prerequisite_modal" tabindex="-1" role="dialog"
+    aria-labelledby="add_prerequisite_modal_label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="add_prerequisite_modal_label">Add Prerequisite</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('add_prerequisite') }}" method="POST">
+                    <input type="hidden" name="topic_id" value="{{ topic.id }}" />
+                    <div class="form-group">
+                        <label for="search_prerequisite">Search Prerequisites</label>
+                        <input type="text" class="form-control" id="search_prerequisite" name="search_prerequisite">
+                    </div>
+                    <div class="form-group">
+                        <label for="prerequisite_list">Available Prerequisites</label>
+                        <select class="form-control" id="prerequisite_list" name="prerequisite">
+                            <option value="" disabled>Select Prerequisite</option>
+                            {% for topic in available_prerequisites %}
+                            <option value="{{ topic.id }}">{{ topic.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="add_prerequisite_button">Add</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

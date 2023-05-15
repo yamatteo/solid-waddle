@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      {% if form.errors %}
+      <div class="alert alert-danger">
+        {{ form.errors }}
+      </div>
+      {% endif %}
+
+      <form method="post" enctype="multipart/form-data">
+        {{ form.csrf_token }}
+
+        <div class="form-group">
+          <label for="topic_id">Topic</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" value="{{ topic.title }}" readonly>
+            <div class="input-group-append">
+              <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#move_problem_modal"
+                data-problem-id="{{ problem.id }}">Move</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="text">Problem Text</label>
+          <div class="form-row mb-3">
+            <div class="col">
+              {{ form.text(id="problem_text", class="form-control", rows="5") }}
+            </div>
+            <div class="col">
+              <div id="text_preview" class="">{{ problem.text }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="solutions">Solutions</label>
+          {% for i in range(5) %}
+          <div class="form-row mb-3">
+            <div class="col">
+              <textarea name="solution_{{ i }}" id="solution_{{ i }}" class="form-control"
+                rows="2">{{ problem.solutions[i] }}</textarea>
+            </div>
+            <div class="col">
+              <div id="solution_preview_{{ i }}" class="">{{ problem.solutions[i] }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% include 'move_problem_modal.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Make previews retypeset on changes.
+  const solutions = document.querySelectorAll('[name^="solution_"]');
+  solutions.forEach(solution => {
+    solution.addEventListener('input', () => {
+      const solutionPreview = document.querySelector(`#solution_preview_${solution.id.slice(-1)}`);
+      solutionPreview.innerHTML = solution.value;
+      MathJax.typeset();
+    });
+  });
+  $("#problem_text").addEventListener('input', () => {
+    $("#text_preview").innerHTML = $("#problem_text").value;
+    MathJax.typeset();
+  });
+</script>
+{% endblock %}
