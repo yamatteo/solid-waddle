@@ -10,6 +10,7 @@ from mysite.models import (MultipleResultsFound, NoResultFound, Problem, Topic, 
                            User, db)
 from mysite.crud_problem import *
 from mysite.crud_topic import *
+import mysite.models
 
 
 @app.route('/')
@@ -131,9 +132,9 @@ def my_progress():
 def hack(action):
     match action:
         case "import_users":
-            db_namespace.import_users_from_csv("users.csv")
+            mysite.models.import_users_from_csv("users.csv")
         case "import_problems":
-            db_namespace.load_problems_from_json("static/problems.json")
+            mysite.models.load_problems_from_json("static/problems.json")
         case "clear_nontopic":
             db.session.query(Problem).filter_by(topic_id="").delete()
             db.session.commit()
@@ -153,16 +154,36 @@ def hack(action):
                     db.session.commit()
     return redirect('/')
 
-
-@app.route('/hack/<action>/<arg>', methods=['GET', 'POST'])
-def hack_arg(action, arg):
-    match action:
-        case "toggle_editor":
-            user = db.session.execute(db.select(User).filter_by(username=arg)).scalar_one()
-            user.is_editor = not user.is_editor
-            db.session.merge(user)
-            db.session.commit()
-            flash(f'Editor toggled! Now is {user.is_editor}.', category="success")
+@app.route('/hack/<action>', methods=['GET', 'POST'])
+@app.route('/hack/<action>/<arg>', methods=['GET', 'POST'], defaults={"arg": None})
+def hack(action, arg=None):
+    if action == "import_users":
+        mysite.models.import_users_from_csv("users.csv")
+    elif action == "import_problems":
+        mysite.models.load_problems_from_json("static/problems.json")
+    elif action == "clear_nontopic":
+        db.session.query(Problem).filter_by(topic_id="").delete()
+        db.session.commit()
+    elif action == "clear_commas":
+        topics = Topic.query.all()
+        for topic in topics:
+            if ',' in topic.prerequisites:
+                topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
+                db.session.merge(topic)
+                db.session.commit()
+    elif action == "fix_pre":
+        topics = Topic.query.all()
+        for topic in topics:
+            if ',' in topic.prerequisites:
+                topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
+                db.session.merge(topic)
+                db.session.commit()
+    elif action== "toggle_editor":
+        user = db.session.execute(db.select(User).filter_by(username=arg)).scalar_one()
+        user.is_editor = not user.is_editor
+        db.session.merge(user)
+        db.session.commit()
+        flash(f'Editor toggled! Now is {user.is_editor}.', category="success")
     return redirect('/')
 
 if __name__ == '__main__':
