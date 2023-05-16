@@ -1,0 +1,286 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "email": "4460999707925969433",
+            "username": "johndoe",
+            "password": "secret",
+            "language": "en",
+            "is_student": true,
+            "is_teacher": false,
+            "is_editor": true
+        },
+        {
+            "id": 2,
+            "email": "5648274736151344553",
+            "username": "janedoe",
+            "password": "password",
+            "language": "en",
+            "is_student": true,
+            "is_teacher": false,
+            "is_editor": true
+        },
+        {
+            "id": 3,
+            "email": "yamatteo@gmail.com",
+            "username": "yamatteo",
+            "password": "ichigoichie",
+            "language": "it",
+            "is_student": true,
+            "is_teacher": true,
+            "is_editor": true
+        }
+    ],
+    "topics": [
+        {
+            "id": "b8538e1d",
+            "title": "Quadratic Equations",
+            "description": "Solving quadratic equations by factoring, completing the square, and using the quadratic formula.",
+            "prerequisites": [
+                "04b8a956",
+                "f594fa13"
+            ]
+        },
+        {
+            "id": "a6d0410f",
+            "title": "Functions",
+            "description": "Defining, evaluating, and graphing functions.",
+            "prerequisites": []
+        },
+        {
+            "id": "2c5b1db9",
+            "title": "Exponents and Logarithms",
+            "description": "Simplifying expressions with exponents, solving exponential equations, and evaluating logarithmic expressions.",
+            "prerequisites": []
+        },
+        {
+            "id": "7143af3b",
+            "title": "Systems of Linear Equations",
+            "description": "Solving systems of linear equations by substitution, elimination, and graphing.",
+            "prerequisites": []
+        },
+        {
+            "id": "04b8a956",
+            "title": "Trigonometry",
+            "description": "Solving problems involving angles, triangles, and trigonometric functions.",
+            "prerequisites": []
+        },
+        {
+            "id": "f594fa13",
+            "title": "Polynomial Functions",
+            "description": "Graphing and solving problems involving polynomial functions.",
+            "prerequisites": [
+                "b8538e1d"
+            ]
+        },
+        {
+            "id": "e1c6d3f6",
+            "title": "Rational Functions",
+            "description": "Graphing and solving problems involving rational functions.",
+            "prerequisites": [
+                "a6d0410f"
+            ]
+        },
+        {
+            "id": "a67f6a39",
+            "title": "Inverse Functions",
+            "description": "Defining and graphing inverse functions.",
+            "prerequisites": [
+                "a6d0410f"
+            ]
+        },
+        {
+            "id": "7c2568a1",
+            "title": "Probability",
+            "description": "Calculating probabilities of events and understanding basic concepts such as independence and conditional probability.",
+            "prerequisites": []
+        },
+        {
+            "id": "96cc4248",
+            "title": "Sequences and Series",
+            "description": "Identifying arithmetic and geometric sequences and series, finding their sums, and solving related problems.",
+            "prerequisites": [
+                "2c5b1db9"
+            ]
+        },
+        {
+            "id": "c1e3183a",
+            "title": "Conic Sections",
+            "description": "Identifying and graphing circles, parabolas, ellipses, and hyperbolas.",
+            "prerequisites": [
+                "b8538e1d"
+            ]
+        },
+        {
+            "id": "fca6e25b",
+            "title": "Matrices",
+            "description": "Defining matrices, performing basic operations, and solving systems of linear equations using matrices.",
+            "prerequisites": [
+                "7143af3b"
+            ]
+        },
+        {
+            "id": "49c196b9",
+            "title": "Polar Coordinates",
+            "description": "Converting between polar and rectangular coordinates, graphing polar equations, and solving related problems.",
+            "prerequisites": [
+                "04b8a956"
+            ]
+        }
+    ],
+    "problems": [
+        {
+            "id": "df73b3ab",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation \\(x^2 - 3x - 10 = 0\\) using factoring.",
+            "solutions": [
+                "$-2, 5$",
+                "not -5",
+                "2",
+                "5",
+                "None of the above"
+            ]
+        },
+        {
+            "id": "1a2b3c4d",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation $4x^2 - 4x + 1 = 0$ using the quadratic formula.",
+            "solutions": [
+                "$\\pm \\frac{1}{2}$",
+                "-1/2",
+                "2",
+                "-2",
+                "None of the above"
+            ]
+        },
+        {
+            "id": "5f6e7d8c",
+            "topic_id": "b8538e1d",
+            "text": "Solve the quadratic equation $2x^2 - 6x - 8 = 0$ by completing the square.",
+            "solutions": [
+                "$2 + 2\\sqrt{3}$ and $2 - 2\\sqrt{3}$",
+                "5",
+                "2 - 2\\sqrt{3}",
+                ",2 + 2\\sqrt{3},",
+                "-2 - 2\\sqrt{3}, -2 + 2\\sqrt{3},-2 + 2\\sqrt{3}, -2 - 2\\sqrt{3},None of the above"
+            ]
+        },
+        {
+            "id": "ce3a79c0bef14cc1810e619b5902265b",
+            "topic_id": "b8538e1d",
+            "text": "sdfsd",
+            "solutions": [
+                "3",
+                "",
+                "",
+                "",
+                ""
+            ]
+        },
+        {
+            "id": "1ae945f0105f4dc4bc78954241b1ed72",
+            "topic_id": "7143af3b",
+            "text": "41 - 40",
+            "solutions": [
+                "1",
+                "2",
+                "3",
+                "4",
+                "5"
+            ]
+        }
+    ],
+    "scores": [
+        {
+            "id": 1,
+            "user_id": 1,
+            "topic_id": "b8538e1d",
+            "problems_seen": 22,
+            "correct_answers": 21
+        },
+        {
+            "id": 2,
+            "user_id": 1,
+            "topic_id": "a6d0410f",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 3,
+            "user_id": 1,
+            "topic_id": "2c5b1db9",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 4,
+            "user_id": 1,
+            "topic_id": "7143af3b",
+            "problems_seen": 5,
+            "correct_answers": 4
+        },
+        {
+            "id": 5,
+            "user_id": 1,
+            "topic_id": "04b8a956",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 6,
+            "user_id": 1,
+            "topic_id": "f594fa13",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 7,
+            "user_id": 1,
+            "topic_id": "e1c6d3f6",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 8,
+            "user_id": 1,
+            "topic_id": "a67f6a39",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 9,
+            "user_id": 1,
+            "topic_id": "7c2568a1",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 10,
+            "user_id": 1,
+            "topic_id": "96cc4248",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 11,
+            "user_id": 1,
+            "topic_id": "c1e3183a",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 12,
+            "user_id": 1,
+            "topic_id": "fca6e25b",
+            "problems_seen": 0,
+            "correct_answers": 0
+        },
+        {
+            "id": 13,
+            "user_id": 1,
+            "topic_id": "49c196b9",
+            "problems_seen": 0,
+            "correct_answers": 0
+        }
+    ]
+}

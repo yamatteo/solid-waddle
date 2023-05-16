@@ -1,0 +1,35 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "MyProject Plugin",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://yamatteo.pythonanywhere.com"
+        }
+    ],
+    "paths": {
+        "/plugin/structure": {
+            "get": {
+                "operationId": "get_project_structure",
+                "tags": [],
+                "summary": "List all the files in the project with their relative path.",
+                "parameters": null,
+                "responses": {
+                    "200": {
+                        "description": "Successful Response.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string",
+                                    "example": "mysite/flask_app.py\ntemplates/base.html"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

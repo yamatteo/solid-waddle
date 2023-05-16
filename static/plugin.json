@@ -1,0 +1,25 @@
+{
+    "url": "https://yamatteo.pythonanywhere.com/static/plugin.json",
+    "enabled": true,
+    "plugin_config": {
+        "schema_version": "v1",
+        "name_for_model": "MyProject",
+        "name_for_human": "MyProject",
+        "description_for_human": "Information about my current project.",
+        "description_for_model": "Assistant uses the MyProject plugin to get the general structure of the project; to get a general summary of the content of single files, modules, packages and folders; to get the exact content of single a file. Assistant will use the information to produce better answers.",
+        "api": {
+            "type": "openapi",
+            "url": "https://yamatteo.pythonanywhere.com/static/api.json",
+            "has_user_authentication": false,
+            "is_user_authenticated": false
+        },
+        "auth": {
+            "type": "none"
+        },
+        "logo_url": "https://en.wikipedia.org/static/images/icons/wikipedia.png",
+        "contact_email": "yamatteo@gmail.com",
+        "legal_info_url": "https://yamatteo.pythonanywhere.com",
+        "endpoints": null
+    },
+    "trusted": false
+}
