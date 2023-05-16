@@ -7,7 +7,7 @@
       <h1 class="display-4">Welcome, {{ session['username'] }}!</h1>
       <p class="lead">Personalized math exercises designed just for you.</p>
       <hr class="my-4">
-      <a class="btn btn-primary btn-lg" href="#" role="button">Start exercising</a>
+      <a class="btn btn-primary btn-lg" href="#" role="button" disabled>Start exercising</a>
     </div>
     {% else %}
     <div class="jumbotron">
@@ -15,8 +15,8 @@
       <p class="lead">Personalized math exercises designed just for you.</p>
       <hr class="my-4">
       <p>Sign up or log in to get started.</p>
-      <a class="btn btn-primary btn-lg" href="#" role="button">Sign up</a>
-      <a class="btn btn-secondary btn-lg" href="/login" role="button">Log in</a>
+      <a class="btn btn-primary btn-lg" href="{{ url_for('signup') }}" role="button">Sign up</a>
+      <a class="btn btn-secondary btn-lg" href="{{ url_for('login') }}" role="button">Log in</a>
     </div>
     {% endif %}
   </div>

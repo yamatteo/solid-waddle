@@ -2,12 +2,12 @@ from uuid import uuid4
 
 from flask import flash, redirect, render_template, request, url_for
 
-from mysite.authentication import editor_required, login_required
+from mysite.authentication import login_required
 from mysite.init import app
 from mysite.models import Problem, ProblemForm, Topic, db
 
-@app.route('/problems')
 @login_required
+@app.route('/problems')
 def list_problems():
     problems = Problem.query.all()
     topics = Topic.query.all()
@@ -17,9 +17,9 @@ def list_problems():
         problem.topic_title = topic.title if topic else "N/A"
     return render_template('list_problems.html', problems=problems, topics=topics)
 
+@login_required(editor=True)
 @app.route('/problems/new', methods=['POST'], defaults={"topic_id": None})
 @app.route('/problems/new/<topic_id>', methods=['POST'])
-@editor_required
 def new_problem(topic_id):
     """
     View function for creating a new problem.
@@ -58,7 +58,7 @@ def new_problem(topic_id):
         flash("Error creating problem", category="danger")
         return redirect(url_for('edit_topic', topic_id=topic_id))
 
-
+@login_required(editor=True)
 @app.route('/problems/edit/<problem_id>', methods=['GET', 'POST'])
 def edit_problem(problem_id):
     problem = Problem.query.get(problem_id)
@@ -84,9 +84,9 @@ def edit_problem(problem_id):
     return render_template('edit_problem.html', problem=problem.unfold(), topic=topic, topics=other_topics, form=form)
 
 
+@login_required(editor=True)
 @app.route("/problems/move", methods=['POST'], defaults={"problem_id": None, "topic_id": None})
 @app.route("/problems/move/<problem_id>/to/<topic_id>", methods=['POST'])
-@editor_required
 def move_problem(problem_id, topic_id):
     print(request.form)
     if problem_id is None:
@@ -105,9 +105,9 @@ def move_problem(problem_id, topic_id):
     return redirect(next_url)
 
 
+@login_required(editor=True)
 @app.route("/problems/delete", methods=['POST'], defaults={"problem_id": None})
 @app.route("/problems/delete/<problem_id>", methods=['POST'])
-@editor_required
 def delete_problem(problem_id):
     if problem_id is None:
         problem_id = request.form.get('problem_id')

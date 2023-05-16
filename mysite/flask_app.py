@@ -4,7 +4,7 @@ import random
 from flask import (abort, flash, redirect, render_template, request, session,
                    url_for)
 from sqlalchemy.sql import func
-from mysite.authentication import editor_required, login_required
+from mysite.authentication import login_required
 from mysite.init import app
 from mysite.models import (MultipleResultsFound, NoResultFound, Problem, Topic, TopicForm,
                            User, db)
@@ -17,17 +17,8 @@ import mysite.models
 def index():
     return render_template('index.html')
 
-# @app.route('/problems')
-# @login_required
-# def problem_list():
-#     topics = Topic.query.all()
-#     for topic in topics:
-#         problems = Problem.query.filter_by(topic_id=topic.id).all()
-#         topic.problems = problems
-#     return render_template('problems.html', topics=topics)
-
-@app.route('/problem/<problem_id>')
 @login_required
+@app.route('/problem/<problem_id>')
 def problem(problem_id):
     # Retrieve the problem with the given ID
     problem = Problem.query.get(problem_id)
@@ -39,8 +30,8 @@ def problem(problem_id):
     # Render the problem page template with the problem and solutions data
     return render_template('problem.html', problem=problem.unfold(), solutions=solutions)
 
-@app.route('/random_problem/<topic_id>')
 @login_required
+@app.route('/random_problem/<topic_id>')
 def random_problem(topic_id):
     # Retrieve the problem with the given ID
     # topic = Topic.query.get(topic_id)
@@ -53,8 +44,8 @@ def random_problem(topic_id):
     # Render the problem page template with the problem and solutions data
     return render_template('problem.html', problem=problem.unfold(), solutions=solutions)
 
-@app.route('/problem/<problem_id>/check', methods=['POST'])
 @login_required
+@app.route('/problem/<problem_id>/check', methods=['POST'])
 def check_answer(problem_id):
     problem = Problem.query.get(problem_id)
     user_answer = request.form['answer']
@@ -79,7 +70,7 @@ def check_answer(problem_id):
 
     return redirect(url_for('list_problems'))
 
-
+@login_required
 @app.route('/my_progress')
 def my_progress():
     # Retrieve all the topics and their corresponding scores for the current user
@@ -130,27 +121,11 @@ def my_progress():
 @app.route('/hack/<action>', methods=['GET', 'POST'])
 @app.route('/hack/<action>/<arg>', methods=['GET', 'POST'], defaults={"arg": None})
 def hack(action, arg=None):
-    if action == "import_users":
-        mysite.models.import_users_from_csv("users.csv")
-    elif action == "import_problems":
-        mysite.models.load_problems_from_json("static/problems.json")
-    elif action == "clear_nontopic":
-        db.session.query(Problem).filter_by(topic_id="").delete()
-        db.session.commit()
-    elif action == "clear_commas":
-        topics = Topic.query.all()
-        for topic in topics:
-            if ',' in topic.prerequisites:
-                topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
-                db.session.merge(topic)
-                db.session.commit()
-    elif action == "fix_pre":
-        topics = Topic.query.all()
-        for topic in topics:
-            if ',' in topic.prerequisites:
-                topic.prerequisites = str(";__;").join(topic.prerequisites.split(","))
-                db.session.merge(topic)
-                db.session.commit()
+    if action == "export":
+        mysite.models.export_data("static/data.json")
+    elif action == "import":
+        mysite.models.import_data("static/data.json")
+        print(User.query.all())
     elif action== "toggle_editor":
         user = db.session.execute(db.select(User).filter_by(username=arg)).scalar_one()
         user.is_editor = not user.is_editor

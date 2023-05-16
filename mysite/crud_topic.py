@@ -2,14 +2,14 @@ from uuid import uuid4
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from mysite.authentication import editor_required, login_required
+from mysite.authentication import login_required
 from mysite.init import app
 from mysite.models import (NoResultFound, Problem, Score, Topic, TopicForm,
                            User, db)
 
 
-@app.route('/topics')
 @login_required
+@app.route('/topics')
 def list_topics():
     topics = Topic.query.all()
     user = User.query.filter_by(username=session.get("username")).one()
@@ -25,8 +25,8 @@ def list_topics():
     db.session.commit()
     return render_template('list_topics.html', topics=topics)
 
+@login_required(editor=True)
 @app.route('/topics/new', methods=['POST'])
-@editor_required
 def new_topic():
     topic = Topic(
         id=uuid4().hex,
@@ -50,8 +50,8 @@ def new_topic():
 
 
 
+@login_required(editor=True)
 @app.route('/topics/edit/<topic_id>', methods=['GET', 'POST'])
-@editor_required
 def edit_topic(topic_id):
     topic = Topic.query.get(topic_id)
     all_topics = Topic.query.filter(Topic.id != topic_id).all()
@@ -87,8 +87,8 @@ def edit_topic(topic_id):
         problems=problems,
     )
 
+@login_required(editor=True)
 @app.route('/topics/add_prerequisite', methods=['POST'])
-@editor_required
 def add_prerequisite():
     topic_id = request.form.get('topic_id')
     prerequisite = request.form.get('prerequisite')
@@ -105,8 +105,8 @@ def add_prerequisite():
     next_url = request.form.get('next_url') or url_for('edit_topic', topic_id=topic.id)
     return redirect(next_url)
 
+@login_required(editor=True)
 @app.route('/topics/remove_prerequisite', methods=['POST'])
-@editor_required
 def remove_prerequisite():
     topic_id = request.form.get('topic_id')
     prerequisite = request.form.get('prerequisite')
@@ -120,9 +120,9 @@ def remove_prerequisite():
     next_url = request.form.get('next_url') or url_for('edit_topic', topic_id=topic.id)
     return redirect(next_url)
 
+@login_required(editor=True)
 @app.route("/topics/delete", methods=['POST'], defaults={"topic_id": None})
 @app.route("/topics/delete/<topic_id>", methods=['POST'])
-@editor_required
 def delete_topic(topic_id):
     if topic_id is None:
         topic_id = request.form.get('topic_id')
