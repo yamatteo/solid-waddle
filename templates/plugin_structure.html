@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            Developer plugin (manual version)
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="abstract-files">Abstract Files:</label>
+                    <select multiple class="form-control" id="abstract-files" name="abstract-files">
+                        {% for file in file_list %}
+                        <option value="{{ file }}">{{ file }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="fulltext-files">Full Text Files:</label>
+                    <select multiple class="form-control" id="fulltext-files" name="fulltext-files">
+                        {% for file in file_list %}
+                        <option value="{{ file }}">{{ file }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+            <hr>
+            <textarea class="form-control" id="output-textarea" oninput="autoExpand(this)" onload="autoExpand(this)">
+This is the file structure of the project:
+{% for file in file_list %}  {{ file }}
+{% endfor %}
+
+{% if abstract_files %}
+This is a summary of some relevant files:
+{% for file in abstract_files %}    {{ file.name }}: "{{ file.abstract }}"
+{% endfor %}{% endif %}
+
+{% if fulltext_files %}
+This is the content of some relevant files:
+{% for file in fulltext_files %}
+================== {{ file.name }} ===================
+{% for line in file.lines %}    {{ line }}{% endfor %}
+{% if loop.last %}============================================{% endif %}
+{% endfor %}{% endif %}
+            </textarea>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function autoExpand(textarea) {
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    }
+    $(document).ready(function () {
+        textarea = document.getElementById('output-textarea');
+        textarea.style.height = 'auto';
+        textarea.style.height = textarea.scrollHeight + 'px';
+    });
+</script>
+{% endblock %}

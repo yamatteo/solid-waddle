@@ -1,3 +1,4 @@
+"""Initializes the Flask application and sets up configurations and environment variables."""
 import os
 import random
 

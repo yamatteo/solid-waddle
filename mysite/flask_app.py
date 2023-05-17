@@ -4,12 +4,14 @@ import random
 from flask import (abort, flash, redirect, render_template, request, session,
                    url_for)
 from sqlalchemy.sql import func
-from mysite.authentication import login_required
 from mysite.init import app
 from mysite.models import (MultipleResultsFound, NoResultFound, Problem, Topic, TopicForm,
                            User, db)
+
+from mysite.authentication import login_required
 from mysite.crud_problem import *
 from mysite.crud_topic import *
+from mysite.plugin import *
 import mysite.models
 
 
