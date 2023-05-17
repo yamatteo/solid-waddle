@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-2">
-            {% if session.get('user_is_editor') %}
+            {% if current_user.is_editor %}
             <button type="button" class="btn btn-primary ml-2" data-toggle="modal" data-target="#new_problem_modal">New
                 Problem</button>
             {% endif %}
@@ -42,7 +42,7 @@
             <tr>
                 <th>Topic</th>
                 <th>Text</th>
-                {% if session.get('user_is_editor') %}
+                {% if current_user.is_editor %}
                 <th>Actions</th>
                 {% endif %}
             </tr>
@@ -55,7 +55,7 @@
                     <div style="display:none;">{{ problem.topic_id }}</div>{{ problem.topic_title }}
                 </td>
                 <td onclick="location.href='{{ url_for('problem', problem_id=problem.id) }}';">{{ problem.text }}</td>
-                {% if session.get('user_is_editor') %}
+                {% if current_user.is_editor %}
                 <td>
                     <a href="{{ url_for('edit_problem', problem_id=problem.id) }}"
                         class="btn btn-secondary btn-sm">Edit</a>

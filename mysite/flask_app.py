@@ -51,11 +51,10 @@ def random_problem(topic_id):
 def check_answer(problem_id):
     problem = Problem.query.get(problem_id)
     user_answer = request.form['answer']
-    user = User.query.filter_by(username=session.get("username")).one()
     try:
-        score = Score.query.filter_by(topic_id=problem.topic_id, user_id=user.id).one()
+        score = Score.query.filter_by(topic_id=problem.topic_id, user_id=current_user.id).one()
     except NoResultFound:
-        score = Score(topic_id=problem.topic_id, user_id=user.id)
+        score = Score(topic_id=problem.topic_id, user_id=current_user.id)
         db.session.add(score)
     score.problems_seen += 1
 

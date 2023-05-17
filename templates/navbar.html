@@ -18,10 +18,10 @@
           <a class="nav-link" href="{{ url_for('my_progress') }}">My Progress</a>
         </li>
       </ul>
-      {% if 'username' in session %}
+      {% if current_user.is_authenticated %}
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <span class="navbar-text">Welcome, {{ session['username'] }}!</span>
+          <span class="navbar-text">Welcome, {{ current_user.username }}!</span>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>

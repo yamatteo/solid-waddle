@@ -3,14 +3,15 @@ import json
 from types import SimpleNamespace
 
 import sqlalchemy.exc
+from flask_login import UserMixin
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
+from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound
 from wtforms import (SelectMultipleField, StringField, SubmitField,
                      TextAreaField)
 from wtforms.validators import DataRequired, Length
-from sqlalchemy.exc import IntegrityError, OperationalError
-from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 from mysite.init import app
 
@@ -19,7 +20,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)

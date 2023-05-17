@@ -2,7 +2,7 @@ from uuid import uuid4
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from mysite.authentication import login_required
+from mysite.authentication import current_user, login_required
 from mysite.init import app
 from mysite.models import (NoResultFound, Problem, Score, Topic, TopicForm,
                            User, db)
@@ -12,15 +12,14 @@ from mysite.models import (NoResultFound, Problem, Score, Topic, TopicForm,
 @app.route('/topics')
 def list_topics():
     topics = Topic.query.all()
-    user = User.query.filter_by(username=session.get("username")).one()
     for topic in topics:
         topic.num_problems = Problem.query.filter_by(topic_id=topic.id).count()
         try:
-            score = Score.query.filter_by(topic_id=topic.id, user_id=user.id).one()
+            score = Score.query.filter_by(topic_id=topic.id, user_id=current_user.id).one()
         except NoResultFound:
-            score = Score(topic_id=topic.id, user_id=user.id)
+            score = Score(topic_id=topic.id, user_id=current_user.id, problems_seen=0, correct_answers=0)
             db.session.add(score)
-        topic.score = int(100 * (score.correct_answers) / max(score.problems_seen, 4))
+        topic.score = int(100 * score.correct_answers / max(score.problems_seen, 4))
     
     db.session.commit()
     return render_template('list_topics.html', topics=topics)

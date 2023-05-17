@@ -1,6 +1,7 @@
 from functools import wraps
 
 from flask import redirect, render_template, request, session, url_for
+from flask_login import LoginManager, current_user, login_user, logout_user
 
 from mysite.init import app
 from mysite.models import MultipleResultsFound, NoResultFound, User, db
@@ -8,17 +9,27 @@ from mysite.models import MultipleResultsFound, NoResultFound, User, db
 
 from functools import update_wrapper
 
+# Create an instance of the LoginManager
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+# Load the user from the user_id
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 def login_required(student=False, teacher=False, editor=False):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
             try:
-                user = User.query.filter_by(username=session.get('username')).one()
-                if student and not user.is_student:
+                
+                # user = User.query.filter_by(username=session.get('username')).one()
+                if student and not current_user.is_student:
                     raise AssertionError("Access denied for non-student user")
-                if teacher and not user.is_teacher:
+                if teacher and not current_user.is_teacher:
                     raise AssertionError("Access denied for non-teacher user")
-                if editor and not user.is_editor:
+                if editor and not current_user.is_editor:
                     raise AssertionError("Access denied for non-editor user")
             except (AssertionError, NoResultFound, MultipleResultsFound) as err:
                 print("LOGIN ERROR", err)
@@ -42,8 +53,7 @@ def login():
         try:
             user = User.query.filter_by(username=username).one()
             assert user.check_password(password)
-            session['username'] = username
-            session["user_is_editor"] = user.is_editor
+            login_user(user)
             return redirect('/')
         except (AssertionError, NoResultFound, MultipleResultsFound) as err:
             print("LOGIN ERROR", err)
@@ -79,18 +89,19 @@ def signup():
         # Create a new User instance
         new_user = User(email=email, username=username, password=password, language=language,
                         is_student=is_student, is_teacher=is_teacher, is_editor=is_editor)
+        login_user(new_user)
 
         # Add the new user to the database
         db.session.add(new_user)
         db.session.commit()
 
         # Redirect to the login page or any other appropriate page
-        return redirect('/login')
+        return redirect("/")
     else:
         return render_template('signup.html')
 
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect('/')
+    logout_user()
+    return redirect("/")
